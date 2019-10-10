@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_transport" name="Transporte" groups='sales_team.group_sale_salesman'/>
+
+    </data>
+</odoo>
