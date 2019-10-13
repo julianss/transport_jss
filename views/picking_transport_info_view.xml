@@ -16,37 +16,49 @@
                         <div class="oe_title">
                             <div class="oe_title">
                                 <h1>
-                                    <field name="name"/><br/>
+                                    <field name="name" readonly="1"/><br/>
                                 </h1>
                             </div>
                         </div>
                         <group col="4">
                             <field name="saleorder_id" readonly="1"/>
-                            <field name="vehicle_id"/>
-                            <field name="vehicle_driver"/>
-                            <field name="transport_date"/>
-                            <field name="customer_id"/>
-                            <field name="lr_number"/>
-                            <field name="user_id"/>
-                            <field name="company_id"/>
+                            <field name="vehicle_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="vehicle_driver" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="transport_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="customer_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="lr_number" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="user_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="company_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </group>
                         <field name="note" placeholder="Notas"/>
-                        <field name="picking_route_ids">
-                            <tree string="Rutas" editable="bottom">
-                                <field name="product_id"/>
-                                <field name="cliente"/>
-                                <field name="source_location"/>
-                                <field name="destination_location"/>
-                                <field name="distance"/>
-                                <field name="cap_carga"/>
-                                <field name="maniobras"/>
-                                <field name="repartos"/>
-                                <field name="recoleccion"/>
-                                <field name="fecha_carga"/>
-                                <field name="fecha_entrega"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
+                        <notebook>
+                            <page string="Ruta">
+                                <field name="picking_route_ids" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree string="Rutas" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="cliente"/>
+                                        <field name="source_location"/>
+                                        <field name="destination_location"/>
+                                        <field name="distance"/>
+                                        <field name="cap_carga"/>
+                                        <field name="maniobras"/>
+                                        <field name="repartos"/>
+                                        <field name="recoleccion"/>
+                                        <field name="fecha_carga"/>
+                                        <field name="fecha_entrega"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Incluir en la cotización">
+                                <field name="extra_products" attrs="{'readonly':[('state','!=','draft')]}">
+                                    <tree string="Extra" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="qty"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
@@ -76,7 +88,7 @@
             </field>
         </record>
 
-        <!--<record id="picking_transport_info_search_view" model="ir.ui.view">
+        <record id="picking_transport_info_search_view" model="ir.ui.view">
             <field name="name">picking.transport.info.search</field>
             <field name="model">picking.transport.info</field>
                 <field name="arch" type="xml">
@@ -84,12 +96,9 @@
                     <field name="customer_id"/>
                     <field name="state"/>
                     <field name="saleorder_id"/>
-                    <field name="delivery_id"/>
-                    <field name="transporter_id"/>
                     <field name="vehicle_id"/>
                     <field name="vehicle_driver"/>
                     <field name="transport_date"/>
-                    <field name="destination_id"/>
                     <field name="user_id"/>
                     <field name="company_id"/>
                     <field name="lr_number"/>
@@ -97,17 +106,14 @@
                         <filter name="Customer" context="{'group_by':'customer_id'}"/>
                         <filter name="State" context="{'group_by':'state'}"/>
                         <filter name="Sale" context="{'group_by':'saleorder_id'}"/>
-                        <filter name="Delivery" context="{'group_by':'delivery_id'}"/>
-                        <filter name="Transporter" context="{'group_by':'transporter_id'}"/>
                         <filter name="Date" context="{'group_by':'transport_date'}"/>
                         <filter name="Responsible user" context="{'group_by':'user_id'}"/>
                         <filter name="Company" context="{'group_by':'company_id'}"/>
-                        <filter name="Destination" context="{'group_by':'destination_id'}"/>
                         <filter name="LR Number" context="{'group_by':'lr_number'}"/>
                     </group>
                 </search>
             </field>
-        </record>-->
+        </record>
 
         <record model="ir.actions.act_window" id="action_picking_transport_info">
             <field name="name">Transport Entry</field>

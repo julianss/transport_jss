@@ -14,7 +14,7 @@ class PickingTransportInfo(models.Model):
         ('cotizado', 'Cotizado'),
         ('cancel', 'Cancel')
     ], default='draft', track_visibility='onchange', copy=False)
-    saleorder_id = fields.Many2one('sale.order', string="Pedido de venta")
+    saleorder_id = fields.Many2one('sale.order', string="Pedido de venta", copy=False)
     vehicle_id = fields.Many2one('fleet.vehicle', string="Vehículo")
     vehicle_driver = fields.Many2one('hr.employee', string="Conductor")
     transport_date = fields.Datetime(string='Fecha', required=True, default=fields.Datetime.now())
@@ -24,6 +24,7 @@ class PickingTransportInfo(models.Model):
     user_id = fields.Many2one('res.users', string='Responsable', default=lambda self: self.env.user.id)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.user.company_id, string='Compañía', readonly=True)
     note = fields.Text('Notas')
+    extra_products = fields.One2many("picking.transport.info.extra", "transport_id", string="Incluir en la cotización", copy=True)
 
     @api.model
     def create(self, vals):
@@ -60,12 +61,28 @@ class PickingTransportInfo(models.Model):
             line_vals = {
                 'order_id': sale.id,
                 'product_id': route.product_id.id,
-                'product_uom_qty': 1,
-
+                'product_uom_qty': 1
             }
             line = self.env["sale.order.line"].create(line_vals)
+            line.product_id_change()
+            print(line.product_id.name, line.price_unit)
+        for extra in self.extra_products:
+            line_vals = {
+                'order_id': sale.id,
+                'product_id': extra.product_id.id,
+                'product_uom_qty': extra.qty
+            }
+            line = self.env["sale.order.line"].create(line_vals)
+            print(line.product_id_change())
         self.write({'saleorder_id': sale.id, 'state':'cotizado'})
         return True
 
+
+class PickingTransportInfoExtra(models.Model):
+    _name = "picking.transport.info.extra"
+
+    transport_id = fields.Many2one("picking.transport.info", string="Transport info")
+    product_id = fields.Many2one("product.product", string="Producto")
+    qty = fields.Integer("Cantidad")
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

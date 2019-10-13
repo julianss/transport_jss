@@ -2,3 +2,4 @@ id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 access_transport_employee,transport_employee,model_picking_transport_info,base.group_user,1,1,1,1
 access_transport_location_employee,transport_location_employee,model_route_location,base.group_user,1,1,1,1
 access_transport_picking_route_employee,transport_picking_route_employee,model_picking_route,base.group_user,1,1,1,1
+access_transport_picking_extra_employee,transport_picking_extra_employee,model_picking_transport_info_extra,base.group_user,1,1,1,1
