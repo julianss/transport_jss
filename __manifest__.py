@@ -20,7 +20,8 @@
         'data/transport_sequence.xml',
         'views/transport_view.xml',
         'views/picking_transport_info_view.xml',
-        'views/route_location_view.xml'
+        'views/route_location_view.xml',
+        'views/fleet_view.xml'
     ],
     'installable': True,
     'auto_install': False,

@@ -24,6 +24,7 @@
                             <field name="saleorder_id" readonly="1"/>
                             <field name="vehicle_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="vehicle_driver" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="ayudantes" attrs="{'readonly':[('state','!=','draft')]}" widget="many2many_tags"/>
                             <field name="transport_date" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="customer_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="lr_number" attrs="{'readonly':[('state','!=','draft')]}"/>
@@ -36,7 +37,7 @@
                                 <field name="picking_route_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                     <tree string="Rutas" editable="bottom">
                                         <field name="product_id"/>
-                                        <field name="cliente"/>
+                                        <field name="cliente" invisible="1"/>
                                         <field name="source_location"/>
                                         <field name="destination_location"/>
                                         <field name="distance"/>

@@ -7,7 +7,7 @@ class PickingRoute(models.Model):
     _rec_name = 'source_location'
 
     transport_info_id = fields.Many2one("picking.route.info", string="Transport Info", required=True)
-    cliente = fields.Many2one("res.partner", string="Cliente", required=True)
+    cliente = fields.Many2one("res.partner", string="Cliente")
     product_id = fields.Many2one("product.product", string="Producto", required=True)
     source_location = fields.Many2one('route.location',string='Origen', required=True)
     destination_location = fields.Many2one('route.location',string='Destino',required=True)

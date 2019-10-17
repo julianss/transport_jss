@@ -17,8 +17,9 @@ class PickingTransportInfo(models.Model):
     saleorder_id = fields.Many2one('sale.order', string="Pedido de venta", copy=False)
     vehicle_id = fields.Many2one('fleet.vehicle', string="Vehículo")
     vehicle_driver = fields.Many2one('hr.employee', string="Conductor")
+    ayudantes = fields.Many2many("hr.employee", string="Ayudantes")
     transport_date = fields.Datetime(string='Fecha', required=True, default=fields.Datetime.now())
-    customer_id = fields.Many2one('res.partner', string='Cliente')
+    customer_id = fields.Many2one('res.partner', string='Cliente', required=True)
     lr_number = fields.Char(string="LR Number", store=True)
     picking_route_ids = fields.One2many('picking.route', 'transport_info_id', string='Picking Route', copy=True)
     user_id = fields.Many2one('res.users', string='Responsable', default=lambda self: self.env.user.id)
@@ -46,6 +47,11 @@ class PickingTransportInfo(models.Model):
         for rec in self:
             rec.write({'state':'cancel'})
 
+    @api.onchange("vehicle_id")
+    def onchange_vehicle_id(self):
+        if self.vehicle_id.driver_id:
+            self.vehicle_driver = self.vehicle_id.driver_id.id
+
     @api.multi
     def cotizar(self):
         sale_vals = {
@@ -65,7 +71,6 @@ class PickingTransportInfo(models.Model):
             }
             line = self.env["sale.order.line"].create(line_vals)
             line.product_id_change()
-            print(line.product_id.name, line.price_unit)
         for extra in self.extra_products:
             line_vals = {
                 'order_id': sale.id,
@@ -73,7 +78,7 @@ class PickingTransportInfo(models.Model):
                 'product_uom_qty': extra.qty
             }
             line = self.env["sale.order.line"].create(line_vals)
-            print(line.product_id_change())
+            line.product_id_change()
         self.write({'saleorder_id': sale.id, 'state':'cotizado'})
         return True
 
