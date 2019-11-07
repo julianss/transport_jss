@@ -4,5 +4,9 @@
 
         <menuitem id="menu_transport" name="Transporte" groups='sales_team.group_sale_salesman'/>
 
+        <record id="group_borrar_line" model="res.groups">
+            <field name="name">Borrar picking route</field>
+        </record>
+
     </data>
 </odoo>

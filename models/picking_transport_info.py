@@ -28,6 +28,17 @@ class PickingTransportInfo(models.Model):
     extra_products = fields.One2many("picking.transport.info.extra", "transport_id", string="Incluir en la cotización", copy=True)
 
     @api.model
+    def default_get(self, fields):
+        res = super(PickingTransportInfo, self).default_get(fields)
+        lines = []
+        products = self.env["product.product"].search([('transport','=',True)])
+        for product in products:
+            lines.append((0,0,{'product_id': product.id}))
+        if lines:
+            res["picking_route_ids"] = lines
+        return res
+
+    @api.model
     def create(self, vals):
         name = self.env['ir.sequence'].next_by_code('picking.transport.seq')
         vals.update({

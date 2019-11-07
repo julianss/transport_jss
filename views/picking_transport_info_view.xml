@@ -38,13 +38,10 @@
                                     <tree string="Rutas" editable="bottom">
                                         <field name="product_id"/>
                                         <field name="cliente" invisible="1"/>
-                                        <field name="source_location"/>
-                                        <field name="destination_location"/>
+                                        <field name="source_location" required="1"/>
+                                        <field name="destination_location" required="1"/>
                                         <field name="distance"/>
                                         <field name="cap_carga"/>
-                                        <field name="maniobras"/>
-                                        <field name="repartos"/>
-                                        <field name="recoleccion"/>
                                         <field name="fecha_carga"/>
                                         <field name="fecha_entrega"/>
                                         <field name="state"/>
